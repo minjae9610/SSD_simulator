@@ -1,13 +1,20 @@
 NAME			=	ssd
 
-PRE				=	srcs/
-SRCS			=	ssd.c	\
+SRCSPATH		=	srcs
+SRCS			=	main.c	\
+					ssd.c	\
 
-CFILES			=	${addprefix ${PRE}, ${SRCS}}
+CFILES			=	${addprefix ${SRCSPATH}/, ${SRCS}}
 OBJS			=	${CFILES:.c=.o}
 
 INC				=	includes
-LIBS			=	libs
+
+LIBSPATH		=	libs
+LIBSPRE			=	lib
+LIBS			=	mjkio	\
+					mjkstd	\
+
+LIBFILES		=	${addprefix ${LIBSPATH}/, ${addprefix ${LIBSPRE}, ${LIBS}}}
 
 CC				=	cc
 CFLAGS			=	-Wall -Wextra -Werror
@@ -19,20 +26,24 @@ REMOVE			=	rm -f
 all:				${NAME}
 
 %.o : %.c
-					${CC} ${CFLAGS} -c $< -o $@ -I ${LIBS}/libmjkio -I ${INC}
+					${CC} ${CFLAGS} -c $< -o $@ -I ${LIBSPATH}/libmjkio -I ${LIBSPATH}/libmjkstd -I ${INC}
 
 ${NAME}:			${OBJS}
-					@${MAKE} -C ${LIBS}/libmjkio
-					${CC} ${OBJS} -o ${NAME} -L ${LIBS}/libmjkio -lmjkio
+					@${MAKE} -C ${LIBSPATH}/libmjkio
+					@${MAKE} -C ${LIBSPATH}/libmjkstd
+					${CC} ${OBJS} -o ${NAME} -L ${LIBSPATH}/libmjkio -lmjkio -L ${LIBSPATH}/libmjkstd -lmjkstd
 
 clean:
 					${REMOVE} ${OBJS}
-					@${MAKE} -C ${LIBS}/libmjkio clean
+					@${MAKE} -C ${LIBSPATH}/libmjkio clean
 
 fclean:
 					@${MAKE} clean
 					${REMOVE} ${NAME}
-					@${MAKE} -C ${LIBS}/libmjkio fclean
+					${REMOVE} nand
+					${REMOVE} result
+					@${MAKE} -C ${LIBSPATH}/libmjkio fclean
+					@${MAKE} -C ${LIBSPATH}/libmjkstd fclean
 
 re:
 					@${MAKE} fclean

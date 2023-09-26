@@ -9,7 +9,7 @@ bool putstr_fd(int fd, const char *s)
     ssize_t write_result;
 
     if (fd < 0 || !s)
-        return (false);
+        return false;
     write_size = 0;
     while (s[write_size])
     {
@@ -18,11 +18,11 @@ bool putstr_fd(int fd, const char *s)
         {
             write_result = write(fd, s, write_size);
             if (write_result != WRITE_SIZE_MAX)
-                return (false);
+                return false;
             write_size = 0;
             s += write_result;
         }
     }
     write_result = write(fd, s, write_size);
-    return (true);
+    return true;
 }
