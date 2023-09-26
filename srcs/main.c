@@ -17,7 +17,7 @@ int main(int argc, char **argv)
         }
         break;
     case READ:
-        printf("0x%.8X\n", ssd_read(atoi(argv[2])));
+        ssd_read(atoi(argv[2]));
         break;
     default:
         putstr_fd(STDERR_FD, "[Usage]\nwrite:\t./ssd_simulator [W] [LBA] [DATA]\nread:\t./ssd_simulator [R] [LBA]\n");
