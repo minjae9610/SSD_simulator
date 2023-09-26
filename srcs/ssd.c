@@ -1,0 +1,7 @@
+#include "ssd.h"
+
+int main()
+{
+
+    return 0;
+}
